@@ -36,7 +36,8 @@ export function setLocale(locale = 'USD') {
 }
 
 export function format(val, raw = false) {
-    return numeral(val).format(raw ? localeSettings.raw : localeSettings.format);
+    const dollars = centsToDollars(val);
+    return numeral(parseFloat(dollars)).format(raw ? localeSettings.raw : localeSettings.format);
 }
 
 export function currencySymbolPosition() {
@@ -45,4 +46,34 @@ export function currencySymbolPosition() {
 
 export function currencySymbol() {
     return localeSettings.currency.symbol;
+}
+
+function localeDecimal() {
+    return localeSettings.delimiters.decimal;
+}
+
+export function centsToDollars(amt = 0, decimals = 2) {
+    let value = amt;
+
+    if (typeof amt === 'string') {
+        value = parseInt(value);
+    }
+
+    if (value === 0) {
+        return `${value}`;
+    }
+
+    if (decimals === 0) {
+        return `${(value / 100)}`;
+    }
+
+    return (value / 100).toFixed(decimals);
+}
+
+export function dollarsToCents(amt) {
+    const value = typeof amt === 'string'
+        ? parseFloat(amt.replace(localeDecimal(), '.'))
+        : amt;
+
+    return Math.round(100 * value);
 }
