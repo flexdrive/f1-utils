@@ -1,0 +1,23 @@
+{
+  "name": "f1-utils",
+  "version": "1.0.0",
+  "description": "cross-project utilities",
+  "main": "index.js",
+  "dependencies": {
+    "numeral": "^2.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flexdrive/f1-utils.git"
+  },
+  "author": "jason.steele@flexdrive.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flexdrive/f1-utils/issues"
+  },
+  "homepage": "https://github.com/flexdrive/f1-utils#readme"
+}
