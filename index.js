@@ -1,1 +1,1 @@
-export * as Currency from './currency';
+export * as Currency from './src/currency';
