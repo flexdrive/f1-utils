@@ -7,3 +7,4 @@ lib
 es
 coverage
 build
+package-lock\.json
