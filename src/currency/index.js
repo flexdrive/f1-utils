@@ -28,7 +28,8 @@ const symbols = {
 };
 
 export function setLocale(locale = 'USD') {
-    const localeSettings = symbols[locale.toUpperCase()];
+    // If a locale config was found for the specified locale, use it, otherwise default to the 'USD' config.
+    const localeSettings = symbols[locale.toUpperCase()] || symbols['USD'];
     numeral.register('locale', locale, localeSettings);
     numeral.locale(locale);
 
