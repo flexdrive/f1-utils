@@ -8,7 +8,7 @@ export var getStateSchema = function getStateSchema(_ref) {
 export var getZipSchema = function getZipSchema(_ref2) {
   var zip = _ref2.zip,
       country = _ref2.country;
-  return Yup.string().trim().max(ZipCodeFormats[country]['length']).matches(ZipCodeFormats[country]['regex']);
+  return Yup.string().trim().max(ZipCodeFormats[country]['length'] || 99).matches(ZipCodeFormats[country]['regex']);
 };
 
 function getAddressSchema(values) {

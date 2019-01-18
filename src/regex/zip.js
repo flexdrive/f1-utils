@@ -1,5 +1,4 @@
 const US = {
-    length: 5,
     regex: /(^\d{5}$)|(^\d{5}-?\d{4}$)/
 };
 

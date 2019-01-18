@@ -8198,7 +8198,6 @@
     var lib_14 = lib.setLocale;
 
     var US = {
-      length: 5,
       regex: /(^\d{5}$)|(^\d{5}-?\d{4}$)/
     };
     var CA = {
@@ -8223,7 +8222,7 @@
     var getZipSchema = function getZipSchema(_ref2) {
       var zip = _ref2.zip,
           country = _ref2.country;
-      return lib_6().trim().max(ZipCodeFormats[country]['length']).matches(ZipCodeFormats[country]['regex']);
+      return lib_6().trim().max(ZipCodeFormats[country]['length'] || 99).matches(ZipCodeFormats[country]['regex']);
     };
 
     function getAddressSchema(values) {

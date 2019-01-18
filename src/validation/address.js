@@ -11,7 +11,7 @@ export const getZipSchema = ({ zip, country }) => {
     return Yup
             .string()
             .trim()
-            .max(ZipCodeFormats[country]['length'])
+            .max(ZipCodeFormats[country]['length'] || 99)
             .matches(ZipCodeFormats[country]['regex'])
 }
 
