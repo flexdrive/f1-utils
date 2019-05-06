@@ -32,6 +32,7 @@
         raw: '0,0.00'
       }
     };
+
     function setLocale() {
       var locale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'USD';
       // If a locale config was found for the specified locale, use it, otherwise default to the 'USD' config.
@@ -57,6 +58,10 @@
         return numeral.localeData().delimiters.decimal;
       };
 
+      var localeThousands = function localeThousands() {
+        return numeral.localeData().delimiters.thousands;
+      };
+
       var centsToDollars = function centsToDollars() {
         var amt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
@@ -78,7 +83,7 @@
       };
 
       var dollarsToCents = function dollarsToCents(amt) {
-        var value = typeof amt === 'string' ? parseFloat(amt.replace(localeDecimal(), '.')) : amt;
+        var value = typeof amt === 'string' ? parseFloat(amt.replace(localeThousands(), '').replace(localeDecimal(), '.')) : amt;
         return Math.round(100 * value);
       };
 
@@ -97,10 +102,10 @@
         setLocale: setLocale
     });
 
-    var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
     function unwrapExports (x) {
-    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+    	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
     }
 
     function createCommonjsModule(fn, module) {
@@ -4017,8 +4022,9 @@
     }
 
     function settled(promises, sync) {
-      var settle = function settle(promise) {
-        return promise.then(function (value) {
+      var Promise = promise(sync);
+      return Promise.all(promises.map(function (p) {
+        return Promise.resolve(p).then(function (value) {
           return {
             fulfilled: true,
             value: value
@@ -4029,9 +4035,7 @@
             value: value
           };
         });
-      };
-
-      return promise(sync).all(promises.map(settle));
+      }));
     }
 
     function collectErrors(_ref) {
@@ -5352,6 +5356,7 @@
 
 
     exports.__esModule = true;
+    exports.createErrorFactory = createErrorFactory;
     exports.default = createValidation;
 
     var _objectWithoutPropertiesLoose2 = interopRequireDefault(objectWithoutPropertiesLoose);
@@ -5458,14 +5463,9 @@
         });
       }
 
-      validate.TEST_NAME = name;
-      validate.TEST_FN = test;
-      validate.TEST = options;
+      validate.OPTIONS = options;
       return validate;
     }
-
-    module.exports.createErrorFactory = createErrorFactory;
-    module.exports = exports["default"];
     });
 
     unwrapExports(createValidation_1);
@@ -5706,7 +5706,7 @@
         // the deduping logic is consistent
 
         schema.tests.forEach(function (fn) {
-          next = next.test(fn.TEST);
+          next = next.test(fn.OPTIONS);
         });
         next._type = schema._type;
         return next;
@@ -5894,7 +5894,7 @@
       notRequired: function notRequired() {
         var next = this.clone();
         next.tests = next.tests.filter(function (test) {
-          return test.TEST_NAME !== 'required';
+          return test.OPTIONS.name !== 'required';
         });
         return next;
       },
@@ -5958,9 +5958,9 @@
 
         next._exclusive[opts.name] = !!opts.exclusive;
         next.tests = next.tests.filter(function (fn) {
-          if (fn.TEST_NAME === opts.name) {
+          if (fn.OPTIONS.name === opts.name) {
             if (isExclusive) return false;
-            if (fn.TEST.test === validate.TEST.test) return false;
+            if (fn.OPTIONS.test === validate.OPTIONS.test) return false;
           }
 
           return true;
@@ -6068,9 +6068,14 @@
           meta: next._meta,
           label: next._label,
           tests: next.tests.map(function (fn) {
-            return fn.TEST_NAME;
-          }, {}).filter(function (n, idx, list) {
-            return list.indexOf(n) === idx;
+            return {
+              name: fn.OPTIONS.name,
+              params: fn.OPTIONS.params
+            };
+          }).filter(function (n, idx, list) {
+            return list.findIndex(function (c) {
+              return c.name === n.name;
+            }) === idx;
           })
         };
       }
@@ -7689,16 +7694,15 @@
               originalValue: originalValue[key]
             });
 
-            if (field) {
+            if (field && field.validate) {
               // inner fields are always strict:
               // 1. this isn't strict so the casting will also have cast inner values
               // 2. this is strict in which case the nested values weren't cast either
               innerOptions.strict = true;
-              if (field.validate) return field.validate(value[key], innerOptions);
-              return Promise.resolve(true);
+              return field.validate(value[key], innerOptions);
             }
 
-            return true;
+            return Promise.resolve(true);
           });
 
           return (0, _runValidations.default)({
@@ -8068,6 +8072,18 @@
 
       _proto.validate = function validate(value, options) {
         return this._resolve(value, options).validate(value, options);
+      };
+
+      _proto.validateSync = function validateSync(value, options) {
+        return this._resolve(value, options).validateSync(value, options);
+      };
+
+      _proto.validateAt = function validateAt(path, value, options) {
+        return this._resolve(value, options).validateAt(path, value, options);
+      };
+
+      _proto.validateSyncAt = function validateSyncAt(path, value, options) {
+        return this._resolve(value, options).validateSyncAt(path, value, options);
       };
 
       return Lazy;
