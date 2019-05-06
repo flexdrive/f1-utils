@@ -27,6 +27,16 @@ const symbols = {
     }
 };
 
+function parseLocaleNumber(stringNumber) {
+    var thousandSeparator = (1111).toLocaleString().replace(/1/g, '');
+    var decimalSeparator = (1.1).toLocaleString().replace(/1/g, '');
+
+    return parseFloat(stringNumber
+        .replace(new RegExp('\\' + thousandSeparator, 'g'), '')
+        .replace(new RegExp('\\' + decimalSeparator), '.')
+    );
+}
+
 export function setLocale(locale = 'USD') {
     // If a locale config was found for the specified locale, use it, otherwise default to the 'USD' config.
     const localeSettings = symbols[locale.toUpperCase()] || symbols['USD'];
@@ -50,6 +60,10 @@ export function setLocale(locale = 'USD') {
         return numeral.localeData().delimiters.decimal;
     };
 
+    const localeThousands = function () {
+        return numeral.localeData().delimiters.thousands;
+    };
+
     const centsToDollars = function (amt = 0, decimals = 2) {
         let value = amt;
 
@@ -70,7 +84,7 @@ export function setLocale(locale = 'USD') {
 
     const dollarsToCents = function (amt) {
         const value = typeof amt === 'string'
-            ? parseFloat(amt.replace(localeDecimal(), '.'))
+            ? parseFloat(amt.replace(localeThousands(), '').replace(localeDecimal(), '.'))
             : amt;
 
         return Math.round(100 * value);
