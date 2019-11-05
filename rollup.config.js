@@ -5,8 +5,10 @@ import replace from 'rollup-plugin-replace'
 
 const env = process.env.NODE_ENV
 const config = {
-  format: 'umd',
-  moduleName: 'f1utils',
+  output: {
+    format: 'umd',
+    name: 'f1utils'
+  },
   plugins: [
     nodeResolve({
       jsnext: true
