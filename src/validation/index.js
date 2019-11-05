@@ -1,2 +1,2 @@
-import * as AddressValidation from './address';
+import * as AddressValidation from './address'
 export { AddressValidation }

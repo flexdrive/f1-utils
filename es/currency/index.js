@@ -1,7 +1,7 @@
 var numeral = require('numeral');
 
 var symbols = {
-  'NOK': {
+  NOK: {
     delimiters: {
       thousands: ' ',
       decimal: ','
@@ -13,7 +13,7 @@ var symbols = {
     format: '0,0.00 $',
     raw: '0,0.00'
   },
-  'USD': {
+  USD: {
     delimiters: {
       thousands: ',',
       decimal: '.'
