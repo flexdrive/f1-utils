@@ -3,8 +3,8 @@ import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'
 import replace from 'rollup-plugin-replace'
 
-var env = process.env.NODE_ENV
-var config = {
+const env = process.env.NODE_ENV
+const config = {
   format: 'umd',
   moduleName: 'f1utils',
   plugins: [

@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import ZipCodeFormats from '../regex/zip'
 
-export const getStateSchema = ({ state, country }) => {
+export const getStateSchema = ({ country }) => {
   return ['US', 'CA'].indexOf(country) > -1
     ? Yup.string()
         .trim()
@@ -10,11 +10,11 @@ export const getStateSchema = ({ state, country }) => {
     : Yup.string().ensure()
 }
 
-export const getZipSchema = ({ zip, country }) => {
+export const getZipSchema = ({ country }) => {
   return Yup.string()
     .trim()
-    .max(ZipCodeFormats[country]['length'] || 99)
-    .matches(ZipCodeFormats[country]['regex'])
+    .max(ZipCodeFormats[country].length || 99)
+    .matches(ZipCodeFormats[country].regex)
 }
 
 function getAddressSchema(values) {

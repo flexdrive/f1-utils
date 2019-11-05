@@ -1,4 +1,4 @@
-const numeral = require('numeral')
+import numeral from 'numeral'
 
 const symbols = {
   NOK: {
@@ -27,20 +27,22 @@ const symbols = {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 function parseLocaleNumber(stringNumber) {
-  var thousandSeparator = (1111).toLocaleString().replace(/1/g, '')
-  var decimalSeparator = (1.1).toLocaleString().replace(/1/g, '')
+  const thousandSeparator = (1111).toLocaleString().replace(/1/g, '')
+  const decimalSeparator = (1.1).toLocaleString().replace(/1/g, '')
 
   return parseFloat(
     stringNumber
-      .replace(new RegExp('\\' + thousandSeparator, 'g'), '')
-      .replace(new RegExp('\\' + decimalSeparator), '.')
+      .replace(new RegExp(`\\${thousandSeparator}`, 'g'), '')
+      .replace(new RegExp(`\\${decimalSeparator}`), '.')
   )
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export function setLocale(locale = 'USD') {
   // If a locale config was found for the specified locale, use it, otherwise default to the 'USD' config.
-  const localeSettings = symbols[locale.toUpperCase()] || symbols['USD']
+  const localeSettings = symbols[locale.toUpperCase()] || symbols.USD
   numeral.register('locale', locale, localeSettings)
   numeral.locale(locale)
 

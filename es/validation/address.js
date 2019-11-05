@@ -1,14 +1,12 @@
 import * as Yup from 'yup';
 import ZipCodeFormats from '../regex/zip';
 export var getStateSchema = function getStateSchema(_ref) {
-  var state = _ref.state,
-      country = _ref.country;
+  var country = _ref.country;
   return ['US', 'CA'].indexOf(country) > -1 ? Yup.string().trim().required('A state is required').max(2, 'State/Province codes cannot be more than 2 characters long') : Yup.string().ensure();
 };
 export var getZipSchema = function getZipSchema(_ref2) {
-  var zip = _ref2.zip,
-      country = _ref2.country;
-  return Yup.string().trim().max(ZipCodeFormats[country]['length'] || 99).matches(ZipCodeFormats[country]['regex']);
+  var country = _ref2.country;
+  return Yup.string().trim().max(ZipCodeFormats[country].length || 99).matches(ZipCodeFormats[country].regex);
 };
 
 function getAddressSchema(values) {
