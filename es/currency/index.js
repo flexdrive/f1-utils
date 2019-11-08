@@ -1,5 +1,17 @@
 import numeral from 'numeral';
 var symbols = {
+  EUR: {
+    delimiters: {
+      thousands: '.',
+      decimal: ','
+    },
+    currency: {
+      symbol: '€',
+      symbolPosition: 'POST'
+    },
+    format: '0,0.00 $',
+    raw: '0,0.00'
+  },
   NOK: {
     delimiters: {
       thousands: ' ',
