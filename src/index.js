@@ -1,3 +1,4 @@
-import * as Currency from './currency';
-export { Currency };
-export { AddressValidation } from './validation';
+import * as Currency from './currency'
+
+export { Currency }
+export { AddressValidation } from './validation'

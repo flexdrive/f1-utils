@@ -1,7 +1,18 @@
-var numeral = require('numeral');
-
+import numeral from 'numeral';
 var symbols = {
-  'NOK': {
+  EUR: {
+    delimiters: {
+      thousands: '.',
+      decimal: ','
+    },
+    currency: {
+      symbol: '€',
+      symbolPosition: 'POST'
+    },
+    format: '0,0.00 $',
+    raw: '0,0.00'
+  },
+  NOK: {
     delimiters: {
       thousands: ' ',
       decimal: ','
@@ -13,7 +24,7 @@ var symbols = {
     format: '0,0.00 $',
     raw: '0,0.00'
   },
-  'USD': {
+  USD: {
     delimiters: {
       thousands: ',',
       decimal: '.'
@@ -25,18 +36,19 @@ var symbols = {
     format: '$0,0.00',
     raw: '0,0.00'
   }
-};
+}; // eslint-disable-next-line no-unused-vars
 
 function parseLocaleNumber(stringNumber) {
   var thousandSeparator = 1111 .toLocaleString().replace(/1/g, '');
   var decimalSeparator = 1.1.toLocaleString().replace(/1/g, '');
-  return parseFloat(stringNumber.replace(new RegExp('\\' + thousandSeparator, 'g'), '').replace(new RegExp('\\' + decimalSeparator), '.'));
-}
+  return parseFloat(stringNumber.replace(new RegExp("\\".concat(thousandSeparator), 'g'), '').replace(new RegExp("\\".concat(decimalSeparator)), '.'));
+} // eslint-disable-next-line import/prefer-default-export
+
 
 export function setLocale() {
   var locale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'USD';
   // If a locale config was found for the specified locale, use it, otherwise default to the 'USD' config.
-  var localeSettings = symbols[locale.toUpperCase()] || symbols['USD'];
+  var localeSettings = symbols[locale.toUpperCase()] || symbols.USD;
   numeral.register('locale', locale, localeSettings);
   numeral.locale(locale);
 
