@@ -1,5 +1,7 @@
 import numeral from 'numeral'
 
+// TODO: THESE ARE NOT LOCALES AND WILL BE INCORRECT AS SOON AS WE HAVE A 2ND COUNTRY USING EUR
+// WITH DIFFERENT FORMATTING RULES. FIX TO USE REAL LOCALES.
 const symbols = {
   EUR: {
     delimiters: {
@@ -9,6 +11,26 @@ const symbols = {
     currency: {
       symbol: '€',
       symbolPosition: 'POST'
+    },
+    abbreviations: {
+      thousand: 'k',
+      million: 'mm',
+      billion: 'b',
+      trillion: 't'
+    },
+    ordinal: function(number) {
+      var b = number % 10
+      return b === 1 || b === 3
+        ? 'er'
+        : b === 2
+        ? 'do'
+        : b === 7 || b === 0
+        ? 'mo'
+        : b === 8
+        ? 'vo'
+        : b === 9
+        ? 'no'
+        : 'to'
     },
     format: '0,0.00 $',
     raw: '0,0.00'
@@ -22,6 +44,15 @@ const symbols = {
       symbol: 'kr',
       symbolPosition: 'POST'
     },
+    abbreviations: {
+      thousand: 'k',
+      million: 'm',
+      billion: 'b',
+      trillion: 't'
+    },
+    ordinal: function(number) {
+      return '.'
+    },
     format: '0,0.00 $',
     raw: '0,0.00'
   },
@@ -33,6 +64,24 @@ const symbols = {
     currency: {
       symbol: '$',
       symbolPosition: 'PRE'
+    },
+    abbreviations: {
+      thousand: 'k',
+      million: 'm',
+      billion: 'b',
+      trillion: 't'
+    },
+    ordinal: function(number) {
+      var b = number % 10
+      return ~~((number % 100) / 10) === 1
+        ? 'th'
+        : b === 1
+        ? 'st'
+        : b === 2
+        ? 'nd'
+        : b === 3
+        ? 'rd'
+        : 'th'
     },
     format: '$0,0.00',
     raw: '0,0.00'
