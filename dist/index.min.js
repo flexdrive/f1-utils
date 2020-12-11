@@ -1164,6 +1164,41 @@
 		setLocale: setLocale
 	});
 
+	var Errors = {
+	  INVALID_VIN: 'ERROR_INVALID_VIN',
+	  VIN_NOT_FOUND: 'ERROR_VIN_NOT_FOUND',
+	  ERROR_SEARCH_VIN: 'ERROR_SEARCH_VIN',
+	  VIN_LOOKUP_ERROR: 'ERROR_VIN_LOOKUP'
+	};
+
+	var DEFAULT_LANGUAGE_CODE = 'en-US';
+	var PREFERRED_LANGUAGE = '2';
+	var DISABLED_LANGUAGE = '0';
+	var LANGUAGES = 3;
+	var languages = [{
+	  settingKey: 1,
+	  settingType: LANGUAGES,
+	  languageCode: 'en-US',
+	  languageName: 'english'
+	}, {
+	  settingKey: 2,
+	  settingType: LANGUAGES,
+	  languageCode: 'es',
+	  languageName: 'spanish'
+	}, {
+	  settingKey: 3,
+	  settingType: LANGUAGES,
+	  languageCode: 'no',
+	  languageName: 'norwegian'
+	}];
+
+	var index$1 = /*#__PURE__*/Object.freeze({
+		languages: languages,
+		DEFAULT_LANGUAGE_CODE: DEFAULT_LANGUAGE_CODE,
+		PREFERRED_LANGUAGE: PREFERRED_LANGUAGE,
+		DISABLED_LANGUAGE: DISABLED_LANGUAGE
+	});
+
 	var interopRequireDefault = createCommonjsModule(function (module) {
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : {
@@ -9295,6 +9330,9 @@
 	  var country = _ref2.country;
 	  return lib_6().trim().max(ZipCodeFormats[country].length || 99).matches(ZipCodeFormats[country].regex);
 	};
+	var ejemplo = function ejemplo() {
+	  console.log('PATATAS');
+	};
 
 	function getAddressSchema(values) {
 	  return lib_9().shape({
@@ -9321,10 +9359,13 @@
 	var address = /*#__PURE__*/Object.freeze({
 		getStateSchema: getStateSchema,
 		getZipSchema: getZipSchema,
+		ejemplo: ejemplo,
 		validateAddress: validateAddress
 	});
 
 	exports.Currency = index;
+	exports.Errors = Errors;
+	exports.LanguageConfig = index$1;
 	exports.AddressValidation = address;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
