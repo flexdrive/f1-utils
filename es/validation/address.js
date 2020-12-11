@@ -8,9 +8,6 @@ export var getZipSchema = function getZipSchema(_ref2) {
   var country = _ref2.country;
   return Yup.string().trim().max(ZipCodeFormats[country].length || 99).matches(ZipCodeFormats[country].regex);
 };
-export var ejemplo = function ejemplo() {
-  console.log('PATATAS');
-};
 
 function getAddressSchema(values) {
   return Yup.object().shape({

@@ -9330,9 +9330,6 @@
 	  var country = _ref2.country;
 	  return lib_6().trim().max(ZipCodeFormats[country].length || 99).matches(ZipCodeFormats[country].regex);
 	};
-	var ejemplo = function ejemplo() {
-	  console.log('PATATAS');
-	};
 
 	function getAddressSchema(values) {
 	  return lib_9().shape({
@@ -9359,7 +9356,6 @@
 	var address = /*#__PURE__*/Object.freeze({
 		getStateSchema: getStateSchema,
 		getZipSchema: getZipSchema,
-		ejemplo: ejemplo,
 		validateAddress: validateAddress
 	});
 
