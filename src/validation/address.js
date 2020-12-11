@@ -16,9 +16,6 @@ export const getZipSchema = ({ country }) => {
     .max(ZipCodeFormats[country].length || 99)
     .matches(ZipCodeFormats[country].regex)
 }
-export const ejemplo = () => {
-  console.log('PATATAS')
-}
 
 function getAddressSchema(values) {
   return Yup.object().shape({
