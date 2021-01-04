@@ -2,6 +2,7 @@ const DEFAULT_LANGUAGE_CODE = 'en-US'
 const PREFERRED_LANGUAGE = '2'
 const DISABLED_LANGUAGE = '0'
 const LANGUAGES = 3
+const LANGUAGES_SETTINGTYPE = LANGUAGES
 const languages = [
   {
     settingKey: 1,
@@ -23,4 +24,10 @@ const languages = [
   }
 ]
 
-export { languages, DEFAULT_LANGUAGE_CODE, PREFERRED_LANGUAGE, DISABLED_LANGUAGE }
+export {
+  languages,
+  DEFAULT_LANGUAGE_CODE,
+  PREFERRED_LANGUAGE,
+  DISABLED_LANGUAGE,
+  LANGUAGES_SETTINGTYPE
+}
