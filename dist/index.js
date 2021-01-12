@@ -1218,7 +1218,8 @@
 	  ERROR_CALLING_AVALARA: 'ERROR_CALLING_AVALARA_TO_WARM_CACHE',
 	  UNABLE_TO_CONNECT_TO_AVALARA: 'UNABLE_TO_CONNECT_TO_AVALARA',
 	  FAILED_CALCULATE_TAXES: 'FAILED_CALCULATE_TAXES',
-	  ERROR_CALCULATING_TAXES: 'ERROR_CALCULATING_TAXES'
+	  ERROR_CALCULATING_TAXES: 'ERROR_CALCULATING_TAXES',
+	  NOT_PENDING_SUBSCRIPTION_CANNOT_BE_CANCELLED: 'ERROR_NOT_PENDING_SUBSCRIPTION_CANNOT_BE_CANCELLED'
 	};
 
 	var DEFAULT_LANGUAGE_CODE = 'en-US';
@@ -3321,11 +3322,11 @@
 	 * _.keysIn(new Foo);
 	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
 	 */
-	function keysIn$1(object) {
+	function keysIn(object) {
 	  return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
 	}
 
-	var keysIn_1 = keysIn$1;
+	var keysIn_1 = keysIn;
 
 	/**
 	 * The base implementation of `_.assignIn` without support for multiple sources
@@ -4104,7 +4105,7 @@
 
 	  var keysFunc = isFull
 	    ? (isFlat ? _getAllKeysIn : _getAllKeys)
-	    : (isFlat ? keysIn : keys_1);
+	    : (isFlat ? keysIn_1 : keys_1);
 
 	  var props = isArr ? undefined : keysFunc(value);
 	  _arrayEach(props || value, function(subValue, key) {
@@ -5456,10 +5457,11 @@
 	  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
 	    return false;
 	  }
-	  // Assume cyclic values are equal.
-	  var stacked = stack.get(array);
-	  if (stacked && stack.get(other)) {
-	    return stacked == other;
+	  // Check that cyclic values are equal.
+	  var arrStacked = stack.get(array);
+	  var othStacked = stack.get(other);
+	  if (arrStacked && othStacked) {
+	    return arrStacked == other && othStacked == array;
 	  }
 	  var index = -1,
 	      result = true,
@@ -5656,10 +5658,11 @@
 	      return false;
 	    }
 	  }
-	  // Assume cyclic values are equal.
-	  var stacked = stack.get(object);
-	  if (stacked && stack.get(other)) {
-	    return stacked == other;
+	  // Check that cyclic values are equal.
+	  var objStacked = stack.get(object);
+	  var othStacked = stack.get(other);
+	  if (objStacked && othStacked) {
+	    return objStacked == other && othStacked == object;
 	  }
 	  var result = true;
 	  stack.set(object, other);
