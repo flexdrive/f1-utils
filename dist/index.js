@@ -1219,7 +1219,14 @@
 	  UNABLE_TO_CONNECT_TO_AVALARA: 'UNABLE_TO_CONNECT_TO_AVALARA',
 	  FAILED_CALCULATE_TAXES: 'FAILED_CALCULATE_TAXES',
 	  ERROR_CALCULATING_TAXES: 'ERROR_CALCULATING_TAXES',
-	  NOT_PENDING_SUBSCRIPTION_CANNOT_BE_CANCELLED: 'ERROR_NOT_PENDING_SUBSCRIPTION_CANNOT_BE_CANCELLED'
+	  NOT_PENDING_SUBSCRIPTION_CANNOT_BE_CANCELLED: 'ERROR_NOT_PENDING_SUBSCRIPTION_CANNOT_BE_CANCELLED',
+	  ERROR_SUBSCRIPTION_NOT_PENDING_CANNOT_BE_CANCELLED: 'ERROR_SUBSCRIPTION_NOT_PENDING_CANNOT_BE_CANCELLED',
+	  ERROR_SWAP_SUBSCRIPTION_CANNOT_BE_CANCELLED: 'ERROR_SWAP_SUBSCRIPTION_CANNOT_BE_CANCELLED',
+	  ERROR_RENEWAL_CANNOT_BE_CANCELLED: 'ERROR_RENEWAL_CANNOT_BE_CANCELLED',
+	  ERROR_ACTIVITY_ACTION_NOT_EXIST: 'ERROR_ACTIVITY_ACTION_NOT_EXIST',
+	  ERROR_INVALID_USERNAME_PASSWORD: 'ERROR_INVALID_USERNAME_PASSWORD',
+	  ERROR_INVALID_TOKEN: 'ERROR_INVALID_TOKEN',
+	  ERROR_PASSWORD_EXPIRED: 'ERROR_PASSWORD_EXPIRED'
 	};
 
 	var DEFAULT_LANGUAGE_CODE = 'en-US';
@@ -3322,11 +3329,11 @@
 	 * _.keysIn(new Foo);
 	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
 	 */
-	function keysIn(object) {
+	function keysIn$1(object) {
 	  return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
 	}
 
-	var keysIn_1 = keysIn;
+	var keysIn_1 = keysIn$1;
 
 	/**
 	 * The base implementation of `_.assignIn` without support for multiple sources
@@ -4105,7 +4112,7 @@
 
 	  var keysFunc = isFull
 	    ? (isFlat ? _getAllKeysIn : _getAllKeys)
-	    : (isFlat ? keysIn_1 : keys_1);
+	    : (isFlat ? keysIn : keys_1);
 
 	  var props = isArr ? undefined : keysFunc(value);
 	  _arrayEach(props || value, function(subValue, key) {
@@ -5457,11 +5464,10 @@
 	  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
 	    return false;
 	  }
-	  // Check that cyclic values are equal.
-	  var arrStacked = stack.get(array);
-	  var othStacked = stack.get(other);
-	  if (arrStacked && othStacked) {
-	    return arrStacked == other && othStacked == array;
+	  // Assume cyclic values are equal.
+	  var stacked = stack.get(array);
+	  if (stacked && stack.get(other)) {
+	    return stacked == other;
 	  }
 	  var index = -1,
 	      result = true,
@@ -5658,11 +5664,10 @@
 	      return false;
 	    }
 	  }
-	  // Check that cyclic values are equal.
-	  var objStacked = stack.get(object);
-	  var othStacked = stack.get(other);
-	  if (objStacked && othStacked) {
-	    return objStacked == other && othStacked == object;
+	  // Assume cyclic values are equal.
+	  var stacked = stack.get(object);
+	  if (stacked && stack.get(other)) {
+	    return stacked == other;
 	  }
 	  var result = true;
 	  stack.set(object, other);
