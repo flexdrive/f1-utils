@@ -1,10 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-var Messages = {
+const Messages = {
   MSG_IS_SUBSCRIPTION_FEE: 'MSG_IS_SUBSCRIPTION_FEE',
   MSG_IS_RENEWAL_VEHICLE_SUBSCRIPTION: 'MSG_IS_RENEWAL_VEHICLE_SUBSCRIPTION',
   MSG_IS_THIRTY_DAY_RATE: 'MSG_IS_THIRTY_DAY_RATE',
@@ -15,6 +9,6 @@ var Messages = {
   MSG_IS_ERROR_MESSAGES_BALANCE: 'MSG_IS_ERROR_MESSAGES_BALANCE',
   MSG_IS_SUBSCRIPTION_COST_LABEL: 'MSG_IS_SUBSCRIPTION_COST_LABEL',
   MSG_IS_REFUNDABLE_DEPOSIT: 'MSG_IS_REFUNDABLE_DEPOSIT'
-};
-var _default = Messages;
-exports["default"] = _default;
+}
+
+export default Messages
