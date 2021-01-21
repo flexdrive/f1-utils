@@ -9465,6 +9465,7 @@
 
 	exports.Currency = index;
 	exports.Errors = Errors;
+	exports.Messages = Messages;
 	exports.LanguageConfig = index$1;
 	exports.AddressValidation = address;
 
