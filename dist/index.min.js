@@ -1294,6 +1294,9 @@
 	  ERROR_RESOURCE_NOT_EXIST: 'ERROR_RESOURCE_NOT_EXIST',
 	  ERROR_RESOURCE_ALREADY_EXIST: 'ERROR_RESOURCE_ALREADY_EXIST',
 	  ERROR_RESOURCE_COULD_NOT_BE_PROCESSED: 'ERROR_RESOURCE_COULD_NOT_BE_PROCESSED',
+	  ERROR_LOCATION_NOT_FOUND: 'ERROR_LOCATION_NOT_FOUND',
+	  ERROR_RATE_CLASS_NOT_FOUND: 'ERROR_RATE_CLASS_NOT_FOUND',
+	  ERROR_DATA_NOT_PROVIDED: 'ERROR_DATA_NOT_PROVIDED',
 	  ERROR_VIN_LIMIT_LENGTH_EXCEEDED: 'ERROR_VIN_LIMIT_LENGTH_EXCEEDED'
 	};
 
@@ -3393,11 +3396,11 @@
 	 * _.keysIn(new Foo);
 	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
 	 */
-	function keysIn$1(object) {
+	function keysIn(object) {
 	  return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
 	}
 
-	var keysIn_1 = keysIn$1;
+	var keysIn_1 = keysIn;
 
 	/**
 	 * The base implementation of `_.assignIn` without support for multiple sources
@@ -4176,7 +4179,7 @@
 
 	  var keysFunc = isFull
 	    ? (isFlat ? _getAllKeysIn : _getAllKeys)
-	    : (isFlat ? keysIn : keys_1);
+	    : (isFlat ? keysIn_1 : keys_1);
 
 	  var props = isArr ? undefined : keysFunc(value);
 	  _arrayEach(props || value, function(subValue, key) {
@@ -5528,10 +5531,11 @@
 	  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
 	    return false;
 	  }
-	  // Assume cyclic values are equal.
-	  var stacked = stack.get(array);
-	  if (stacked && stack.get(other)) {
-	    return stacked == other;
+	  // Check that cyclic values are equal.
+	  var arrStacked = stack.get(array);
+	  var othStacked = stack.get(other);
+	  if (arrStacked && othStacked) {
+	    return arrStacked == other && othStacked == array;
 	  }
 	  var index = -1,
 	      result = true,
@@ -5728,10 +5732,11 @@
 	      return false;
 	    }
 	  }
-	  // Assume cyclic values are equal.
-	  var stacked = stack.get(object);
-	  if (stacked && stack.get(other)) {
-	    return stacked == other;
+	  // Check that cyclic values are equal.
+	  var objStacked = stack.get(object);
+	  var othStacked = stack.get(other);
+	  if (objStacked && othStacked) {
+	    return objStacked == other && othStacked == object;
 	  }
 	  var result = true;
 	  stack.set(object, other);
