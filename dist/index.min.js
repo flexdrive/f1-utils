@@ -1293,11 +1293,23 @@
 	  ERROR_CALLING_LOGALTY_SERVICE: 'ERROR_CALLING_LOGALTY_SERVICE',
 	  ERROR_RESOURCE_NOT_EXIST: 'ERROR_RESOURCE_NOT_EXIST',
 	  ERROR_RESOURCE_ALREADY_EXIST: 'ERROR_RESOURCE_ALREADY_EXIST',
+	  ERROR_VIN_LIMIT_LENGTH_EXCEEDED: 'ERROR_VIN_LIMIT_LENGTH_EXCEEDED',
 	  ERROR_RESOURCE_COULD_NOT_BE_PROCESSED: 'ERROR_RESOURCE_COULD_NOT_BE_PROCESSED',
 	  ERROR_LOCATION_NOT_FOUND: 'ERROR_LOCATION_NOT_FOUND',
 	  ERROR_RATE_CLASS_NOT_FOUND: 'ERROR_RATE_CLASS_NOT_FOUND',
 	  ERROR_DATA_NOT_PROVIDED: 'ERROR_DATA_NOT_PROVIDED',
-	  ERROR_VIN_LIMIT_LENGTH_EXCEEDED: 'ERROR_VIN_LIMIT_LENGTH_EXCEEDED'
+	  ERROR_MARKET_NOT_FOUND: 'ERROR_MARKET_NOT_FOUND',
+	  ERROR_RATE_CLASS_NOT_ACTIVE: 'ERROR_RATE_CLASS_NOT_ACTIVE',
+	  ERROR_VEHICLE_PICTURES_NOT_FOUND: 'ERROR_VEHICLE_PICTURES_NOT_FOUND',
+	  ERROR_VEHICLE_NOT_FOUND: 'ERROR_VEHICLE_NOT_FOUND',
+	  ERROR_VEHICLES_SERVICE: 'ERROR_VEHICLES_SERVICE',
+	  ERROR_PICTURES_SERVICE: 'ERROR_PICTURES_SERVICE',
+	  ERROR_PROCESSING_IMAGE: 'ERROR_PROCESSING_IMAGE',
+	  ERROR_UPDATING_ASSET: 'ERROR_UPDATING_ASSET',
+	  ERROR_GETTING_ASSET: 'ERROR_GETTING_ASSET',
+	  ERROR_DELETING_ASSET: 'ERROR_DELETING_ASSET',
+	  ERROR_RESIZING_IMAGE: 'ERROR_RESIZING_IMAGE',
+	  ERROR_DOWNLOADING_IMAGE: 'ERROR_DOWNLOADING_IMAGE'
 	};
 
 	var Messages = {
@@ -1310,7 +1322,10 @@
 	  MSG_IS_ERROR_MESSAGES_UNAVAILABLE: 'MSG_IS_ERROR_MESSAGES_UNAVAILABLE',
 	  MSG_IS_ERROR_MESSAGES_BALANCE: 'MSG_IS_ERROR_MESSAGES_BALANCE',
 	  MSG_IS_SUBSCRIPTION_COST_LABEL: 'MSG_IS_SUBSCRIPTION_COST_LABEL',
-	  MSG_IS_REFUNDABLE_DEPOSIT: 'MSG_IS_REFUNDABLE_DEPOSIT'
+	  MSG_IS_REFUNDABLE_DEPOSIT: 'MSG_IS_REFUNDABLE_DEPOSIT',
+	  MSG_SUCCESS_IMAGE_DELETE: 'MSG_SUCCESS_IMAGE_DELETE',
+	  MSG_SUCCESS_VEHICLE_UPDATE: 'MSG_SUCCESS_VEHICLE_UPDATE',
+	  MSG_SUCCESS_VEHICLE_CREATE: 'MSG_SUCCESS_VEHICLE_CREATE'
 	};
 
 	var DEFAULT_LANGUAGE_CODE = 'en-US';
@@ -3396,11 +3411,11 @@
 	 * _.keysIn(new Foo);
 	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
 	 */
-	function keysIn(object) {
+	function keysIn$1(object) {
 	  return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
 	}
 
-	var keysIn_1 = keysIn;
+	var keysIn_1 = keysIn$1;
 
 	/**
 	 * The base implementation of `_.assignIn` without support for multiple sources
@@ -4179,7 +4194,7 @@
 
 	  var keysFunc = isFull
 	    ? (isFlat ? _getAllKeysIn : _getAllKeys)
-	    : (isFlat ? keysIn_1 : keys_1);
+	    : (isFlat ? keysIn : keys_1);
 
 	  var props = isArr ? undefined : keysFunc(value);
 	  _arrayEach(props || value, function(subValue, key) {
@@ -5531,11 +5546,10 @@
 	  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
 	    return false;
 	  }
-	  // Check that cyclic values are equal.
-	  var arrStacked = stack.get(array);
-	  var othStacked = stack.get(other);
-	  if (arrStacked && othStacked) {
-	    return arrStacked == other && othStacked == array;
+	  // Assume cyclic values are equal.
+	  var stacked = stack.get(array);
+	  if (stacked && stack.get(other)) {
+	    return stacked == other;
 	  }
 	  var index = -1,
 	      result = true,
@@ -5732,11 +5746,10 @@
 	      return false;
 	    }
 	  }
-	  // Check that cyclic values are equal.
-	  var objStacked = stack.get(object);
-	  var othStacked = stack.get(other);
-	  if (objStacked && othStacked) {
-	    return objStacked == other && othStacked == object;
+	  // Assume cyclic values are equal.
+	  var stacked = stack.get(object);
+	  if (stacked && stack.get(other)) {
+	    return stacked == other;
 	  }
 	  var result = true;
 	  stack.set(object, other);
